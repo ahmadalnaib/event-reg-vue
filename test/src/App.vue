@@ -3,9 +3,13 @@ import { ref, onMounted } from 'vue';
 import EventCard from '@/components/EventCard.vue';
 import BookingItem from '@/components/BookingItem.vue';
 import LoadingEventCard from '@/components/LoadingEventCard.vue';
+import LoadingBookingItem from '@/components/LoadingBookingItem.vue';
 
 const events = ref([]);
 const eventLoading = ref(false);
+
+const bookings = ref([]);
+const bookingLoading = ref(false);
 
 const fetchEvents = async () => {
   eventLoading.value = true;
@@ -18,29 +22,39 @@ const fetchEvents = async () => {
   }
 };
 
-const handleREgistration=async(event)=>{
-  const newBooking={
-    id:Date.now().toString(),
-    userId:1,
-    eventId:event.id,
-    eventTitle:event.title,
-
+const fetchBookings = async () => {
+  bookingLoading.value = true;
+  try {
+    const response = await fetch('http://localhost:3001/bookings');
+    bookings.value = await response.json();
+  } finally {
+    bookingLoading.value = false;
   }
-  await fetch('http://localhost:3001/bookings',{
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json'
+};
+
+const handleREgistration = async (event) => {
+  const newBooking = {
+    id: Date.now().toString(),
+    userId: 1,
+    eventId: event.id,
+    eventTitle: event.title,
+  };
+  await fetch('http://localhost:3001/bookings', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-    body:JSON.stringify({
+    body: JSON.stringify({
       ...newBooking,
-      status:'confirmed'
+      status: 'confirmed',
+    }),
+  });
+};
 
-    })
-  })
- 
-}
-
-onMounted(fetchEvents);
+onMounted(() => {
+  fetchEvents();
+  fetchBookings();
+});
 </script>
 <template>
   <div class="container mx-auto my-8 space-y-8 p-5">
@@ -58,13 +72,22 @@ onMounted(fetchEvents);
         />
       </template>
       <template v-else>
-       <LoadingEventCard v-for="i in 3" :key="i"/>
+        <LoadingEventCard v-for="i in 3" :key="i" />
       </template>
     </div>
-   
+
     <h2 class="text-2xl font-medium">Your Bookings</h2>
     <section class="grid grid-cols-1 gap-">
-      <BookingItem />
+      <template v-if="!bookingLoading">
+        <BookingItem
+          v-for="booking in bookings"
+          :key="booking.id"
+          :title="booking.eventTitle"
+        />
+      </template>
+      <template v-else>
+        <LoadingBookingItem v-for="i in 3" :key="i" />
+      </template>
     </section>
   </div>
 </template>
