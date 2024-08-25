@@ -2,8 +2,11 @@
 import { ref, onMounted } from 'vue';
 import EventCard from '@/components/EventCard.vue';
 import LoadingEventCard from '@/components/LoadingEventCard.vue';
+import useBookings from '../composables/useBookings';
 
-defineEmits(['register']);
+
+const { handleREgistration } = useBookings();
+
 
 const events = ref([]);
 const loading = ref(false);
@@ -44,7 +47,7 @@ onMounted(fetchEvents);
             :title="event.title"
             :date="event.date"
             :description="event.description"
-            @register="$emit('register', event)"
+            @register="handleREgistration(event)"
           />
         </template>
         <template v-else>
