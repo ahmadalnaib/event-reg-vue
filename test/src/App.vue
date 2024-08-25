@@ -1,22 +1,14 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import {  onMounted } from 'vue';
 
 import BookingItem from '@/components/BookingItem.vue';
 import LoadingBookingItem from '@/components/LoadingBookingItem.vue';
 import EventList from '@/components/EventList.vue';
+import useBookings from '@/composables/useBookings';
 
-const bookings = ref([]);
-const bookingLoading = ref(false);
 
-const fetchBookings = async () => {
-  bookingLoading.value = true;
-  try {
-    const response = await fetch('http://localhost:3001/bookings');
-    bookings.value = await response.json();
-  } finally {
-    bookingLoading.value = false;
-  }
-};
+const {bookings,fetchBookings,loading }= useBookings();
+
 
 const handleREgistration = async (event) => {
   if (bookings.value.some((booking) => booking.eventId === event.id)) {
@@ -97,7 +89,7 @@ onMounted(() => {
 
     <h2 class="text-2xl font-medium">Your Bookings</h2>
     <section class="grid grid-cols-1 gap-">
-      <template v-if="!bookingLoading">
+      <template v-if="!loading">
         <BookingItem
           v-for="booking in bookings"
           :key="booking.id"
