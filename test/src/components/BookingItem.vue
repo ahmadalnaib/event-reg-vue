@@ -6,6 +6,8 @@ defineProps({
   title: String,
   status: String,
 });
+
+defineEmits(['cancelled']);
 </script>
 
 <template>
@@ -16,7 +18,7 @@ defineProps({
         <div>{{ status }}</div>
       </div>
 
-      <RoundButton variant="danger"> Cancel </RoundButton>
+      <RoundButton variant="danger" @click="$emit('cancelled')"> Cancel </RoundButton>
     </div>
   </SectionCard>
 </template>
