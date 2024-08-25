@@ -29,6 +29,34 @@
       "eventId": 1,
       "eventTitle": "Event 1",
       "status": "confirmed"
+    },
+    {
+      "id": "1724607832645",
+      "userId": 1,
+      "eventId": 3,
+      "eventTitle": "Event 3",
+      "status": "confirmed"
+    },
+    {
+      "id": "1724607835751",
+      "userId": 1,
+      "eventId": 3,
+      "eventTitle": "Event 3",
+      "status": "confirmed"
+    },
+    {
+      "id": "1724607838393",
+      "userId": 1,
+      "eventId": 1,
+      "eventTitle": "Event 1",
+      "status": "confirmed"
+    },
+    {
+      "id": "1724607839185",
+      "userId": 1,
+      "eventId": 2,
+      "eventTitle": "Event 2",
+      "status": "confirmed"
     }
   ]
 }
